@@ -1,0 +1,146 @@
+body {
+  background: #1f1d1d;
+}
+
+.title {
+  background-color: #1f1d1d;
+  color: white;
+  border: none;
+  text-align: center;
+  font-size: 55px;
+  font-family: 'Oswald', sans-serif;
+  height: 40px;
+  margin-bottom: 200px;
+  margin-top: 50px;
+}
+.sub-page-title {
+  background-color: #1f1d1d;
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  font-size: 55px;
+  font-family: 'Oswald', sans-serif;
+  height: 40px;
+  margin-bottom: 20px;
+  margin-top: 0px;
+  text-decoration: none;
+}
+
+.sub-page-title .title-link {
+  text-decoration: none;
+  color: white;
+}
+
+.sub-page-title img.logo-icon{
+  height: 45px;
+
+}
+
+.menu {
+  background-color: #1f1d1d;
+  color: white;
+  border-radius: 50px;
+  text-align:center;
+  font-size: 35px;
+  cursor: pointer;
+  width: 400px;
+  font-family: 'Oswald', sans-serif;
+  height: 200px;
+}
+.menu2 {
+  background-color: #1f1d1d;
+  color: white;
+  border-radius: 10px;
+  text-align:center;
+  font-size: 15px;
+  cursor: pointer;
+  width: 150px;
+  font-family: 'Oswald', sans-serif;
+  height: 40px;
+  padding: 0px;
+  margin: 10px;
+}
+
+.menu3 {
+  background-color: #1f1d1d;
+  color: white;
+  border-radius: 50px;
+  text-align:Left;
+  font-size: 35px;
+  cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+  margin-left: 20px;
+}
+.menu2 a{
+  color: white;
+  text-decoration: none;
+  padding: 15px;
+  display: block;
+  text-align: center;
+}
+.menu2 a:hover{
+  background-color: #0e0d0d;
+}
+
+a {
+  text-decoration: none;
+}
+
+.menu-head-to-head {
+  background-image: url('assets/headtohead.png');
+}
+
+.menu-rules {
+  background-image: url('assets/rules.png');
+}
+
+.menu-rosters {
+  background-image: url('assets/rosters.png');
+}
+
+.menu-data {
+  background-image: url('assets/stats.png');
+}
+
+.menu-players {
+  background-image: url('assets/players.png');
+}
+
+.menu-teams {
+  background-image: url('assets/teams.png');
+}
+
+.rules{
+  font-family: 'Oswald', sans-serif;
+  color: white;
+  background-color: 1f1d1d;
+  margin-top: 100px;
+  text-align: left;
+  margin-left: 500px;
+  margin-right: 500px;
+}
+.rules-title {
+  font-family: 'Oswald', sans-serif;
+  color: white;
+  background-color: 1f1d1d;
+  margin-top: 100px;
+  text-align: center;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.roster-name {
+
+}
+
+.roster-players {
+
+}
+
+.roster-button {
+  font-size: 22px;
+  margin-right: 25px;
+}
+
+
