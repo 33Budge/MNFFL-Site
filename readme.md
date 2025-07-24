@@ -1,6 +1,7 @@
 CURRENTLY ONLY COMPATIBLE WITH NFL SLEEPER LEAGUES
 
-
+Assumptions: 
+    - users in the league dont switch teams slots at all, meaning if they left the league and came back in a differnt years they are still in the same "slot"
 
 
 
