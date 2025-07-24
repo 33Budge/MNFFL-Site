@@ -1,3 +1,9 @@
+ONLY COMPATIBLE WITH SLEEPER FANTASY
+
+
+
+
+
 known needed fixes:
     -fixup the main.js file with the years and years codes situation\
     -find the correct way to do the right franchises and stuff (the roster_id meathod is bad for poritibility)
