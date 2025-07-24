@@ -1,40 +1,47 @@
-let year2022 = '779087239882874880';
-let year2023 = '916390138647785472';
-let year2024 = '1048344081149054976';
-let year2025 = '1183100419290038272';
-let years = [2022, 2023, 2024, 2025];
-let yearIDs = ['779087239882874880', '916390138647785472', '1048344081149054976', '1183100419290038272'];
-let yearCurrent = years[years.length - 1];
+let numOfTeams = 12; //what what the most teams you ever had in this league at one time?
+let firstYear = 2022; //first year you started using sleeper for this league
+let lastYear = 2025; //last or current year of usign sleepr for this league
+let yearIDs = ['779087239882874880', '916390138647785472', '1048344081149054976', '1183100419290038272']; //paste in each league id for each of your years in sleeper
+let years = [];
+const teams = [];
 
-let jsonTeams = [];
-
-const teams = [
-    {number: 1},
-    {number: 2},
-    {number: 3},
-    {number: 4},
-    {number: 5},
-    {number: 6},
-    {number: 7},
-    {number: 8},
-    {number: 9},
-    {number: 10},
-    {number: 11},
-    {number: 12}
-]
-
-function addVariable (teamNumber, varName, varValue) {
-    const index = teamNumber - 1;
-    teams[index][varName] = varValue;
+for (i = 0; i <= lastYear - firstYear; i++) {
+    years.push(firstYear + i);
 }
 
-function addToVariable (teamNumber, varName, varValue) {
-    const index = teamNumber - 1;
-    teams[index][varName].push(varValue); //problematic?????????
+for (i = 0; i < numOfTeams; i++) {
+    teams.push({number: i + 1});
+}
+
+for (i = 0; i < numOfTeams; i++) {
+    for (j = firstYear; j < lastYear + 1; j++) {
+        addVariable(i, j, {});
+    }
+}
+
+function addVariable (teamIndex, varName, varValue) {
+    teams[teamIndex][varName] = varValue;
+}
+
+function addToVariable (teamIndex, varName, varValue) {
+    teams[teamIndex][varName].push(varValue); 
 }
 
 
-async function fetchOwnerData() { //trashcode for getting past owners with a bad way of getting around years with differnt numbers of teams
+
+async function fetchOwnerData () {
+    for (i = 0; i < years.length; i++) {
+        const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i] + "/rosters"); 
+        const data = await response.json();
+        for (j = 0; j < data.length; j++) {
+            teams[j][years[i]] // find out how to add to a team in teams but in that team a year and in that year add a variable named rosterID which is of the value data[j].roster_id
+        }
+    }
+}
+
+
+console.log(teams);
+/* async function fetchOwnerData() { //trashcode for getting past owners with a bad way of getting around years with differnt numbers of teams
     for(let i = 0; i < years.length; i++) {
         const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i] + "/rosters"); 
         const data = await response.json();
@@ -54,21 +61,21 @@ async function fetchOwnerData() { //trashcode for getting past owners with a bad
             }
         });
     }
-}
+} */
 
-async function fetchRosterData() {
+/* async function fetchRosterData() {
     for(i = 0; i < years.length; i++) {
         const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i] + "/rosters"); 
         const data = await response.json();
         data.forEach(roster => {
             addVariable(roster.roster_id, "starters" + years[i], roster.starters);
             addVariable(roster.roster_id, "players" + years[i], roster.players);
-            addVariable(roster.roster_id, "metadata" + years[i], roster.settings)
+            addVariable(roster.roster_id, "metadata" + years[i], roster.settings);
         });
     }
-}
+} */
 
-async function fetchCurrUserData() {
+/* async function fetchCurrUserData() {
     const teamResponse = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[years.length - 1] + "/users"); 
     const teamData = await teamResponse.json();
     teamData.forEach(user => {
@@ -93,30 +100,10 @@ async function fetchCurrUserData() {
     for(i = 0; i < teams.length; i++){
         console.log(teams[i]);
     }
-}
-
-async function main() {
-    await fetchOwnerData();
-    await fetchCurrUserData();
-    await fetchRosterData();
-}
-
-main();
+} */
 
 if (window.location.pathname.endsWith("rosters.html")) {
-    /* fetch("https://api.sleeper.app/v1/league/779087239882874880/rosters")
-    .then(response => response.json())
-    .then(data => {
-        data.forEach(roster => {
-            console.log(roster.owner_id);
-            });
-        data.forEach(roster => {
-            console.log(roster.roster_id);
-        });
-        })
-    .catch(error => console.error(error)); */
-
-    function genYearButtons(year) {
+    async function genYearButtons(year) {
         container = document.getElementById("yearButtons");
         container.innerHTML = "";
 
@@ -129,14 +116,24 @@ if (window.location.pathname.endsWith("rosters.html")) {
         
         });
     }
-    function displayYear(year) {
 
+
+    async function displayYear(year) {
+        var output;
+        for(i = 0; i < teams.length; i++) {
+
+        }
     }
 
-    displayYear(yearCurrent);
-    genYearButtons();
+    async function main() {
+        await fetchOwnerData();
+/*         await fetchCurrUserData();
+        await fetchRosterData();
+        await displayYear(yearCurrent); */
+    }
 
-    document.getElementById("demo").innerHTML =" <h2> Hello World</h2>";
+    main();
+    genYearButtons();
 
 }
 
