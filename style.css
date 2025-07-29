@@ -165,3 +165,6 @@ a {
   color:#ccc;
 }
 
+.teamcard ul {
+  list-style: none;
+}

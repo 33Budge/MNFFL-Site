@@ -4,6 +4,7 @@ let lastYear = 2025; //last or current year of usign sleepr for this league
 let yearIDs = ['779087239882874880', '916390138647785472', '1048344081149054976', '1183100419290038272']; //paste in each league id for each of your years in sleeper
 let years = [];
 const teams = [];
+let leagueSettings = [];
 
 for (i = 0; i <= lastYear - firstYear; i++) {
     years.push(firstYear + i);
@@ -29,18 +30,9 @@ async function fetchRosterData () {
             teams[j][years[i]]["players"] = data[j].players;
             teams[j][years[i]]["metadata"] = data[j].settings;
             teams[j][years[i]]["bench"] = [];
-        }
-    }
-}
-
-async function fillBenches() {
-    for (i = 0; i < years.length; i++) {
-        for (j = 0; j < teams.length; j++) {
-            if (teams[j] && teams[j][years[i]] && Array.isArray(teams[j][years[i]]["players"])) {
-                for (k = 0; k < teams[j][years[i]]["players"].length; k++) {
-                    if(!teams[j][years[i]]["starters"].includes(teams[j][years[i]]["players"][k])) { //i feel like its getting a little unreadable here
-                        teams[j][years[i]]["bench"].push(teams[j][years[i]]["players"][k]);
-                    }
+            for (k = 0; k < teams[j][years[i]]["players"].length; k++) { // maybe bad, too many things in 1 function, but i fill the benches here
+                if(!teams[j][years[i]]["starters"].includes(teams[j][years[i]]["players"][k])) { //i feel like its getting a little unreadable here
+                    teams[j][years[i]]["bench"].push(teams[j][years[i]]["players"][k]);
                 }
             }
         }
@@ -60,7 +52,43 @@ async function fetchUserData() {
     }
 }
 
+async function fetchLeagueData() {
+    for (i = 0; i < years.length; i++) {
+        const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i]);
+        const data = await response.json();
+        leagueSettings[years[i]] = data;
+    }
+}
+
+async function loadPlayerDB() { //probably bad because you need to fetch 5MB everytime
+    console.log("fetching playersDB");
+    const res = await fetch("players.json");
+    const data = await res.json();
+    playerDB = data;
+}
+
+function getPlayerName(id) {
+    if (isNaN(id)) {
+        return id;
+    } else if(playerDB && playerDB[id]) {
+        return playerDB[id].full_name;
+    } else {
+        console.log(id + " not found ");
+        return id;
+    }
+}
+
+function getPlayerPos(id) {
+    if (isNaN(id)) {
+        return "DEF";
+    } else if(playerDB && playerDB[id]) {
+        return playerDB[id].position;
+    }
+    console.log(playerDB[id] + " not found ");
+}
+
 console.log(teams);
+console.log(leagueSettings);
 
 if (window.location.pathname.endsWith("rosters.html")) {
     async function genYearButtons(year) {
@@ -71,14 +99,13 @@ if (window.location.pathname.endsWith("rosters.html")) {
             const btn = document.createElement("button");
             btn.textContent = year;
             btn.classList.add("roster-button");
-            btn.onclick = () => displayYear(year);
+            btn.onclick = () => displayRosters(year);
             container.appendChild(btn);
         
         });
     }
 
-
-    async function displayYear(year) {
+    async function displayRosters(year) {
         const container = document.getElementById("rosterContainer");
 
         container.innerHTML = "";
@@ -86,44 +113,41 @@ if (window.location.pathname.endsWith("rosters.html")) {
         for (i = 0; i < teams.length; i++) {
             const teamDiv = document.createElement("div");
             teamDiv.classList.add("teamcard");
+
             const teamTitle = document.createElement("h2");
             if (teams[i][year]["teamName"] == undefined) {
                 teamTitle.textContent = teams[i][year]["displayName"];
             } else {
                 teamTitle.textContent = teams[i][year]["teamName"];
             }
-
-
-
-            teamDiv.appendChild(teamTitle);
             
             const starterList = document.createElement("ul");
             for (j = 0; j < teams[i][year]["starters"].length; j++) {
                 const li = document.createElement("li");
-                li.textContent = teams[i][year]["starters"][j];
+                li.textContent = leagueSettings[year]["roster_positions"][j] + " " + getPlayerName(teams[i][year]["starters"][j]);
                 starterList.appendChild(li);
             }
-
 
             const benchList = document.createElement("ul");
             for (j = 0; j < teams[i][year]["bench"].length; j++) {
                 const li = document.createElement("li");
-                li.textContent = teams[i][year]["bench"][j];
+                li.textContent = getPlayerPos(teams[i][year]["bench"][j]) + " " + getPlayerName(teams[i][year]["bench"][j]);
                 benchList.appendChild(li);
             }
 
-
-            teamDiv. appendChild(starterList);
-            teamDiv. appendChild(benchList);
+            teamDiv.appendChild(teamTitle);
+            teamDiv.appendChild(starterList);
+            teamDiv.appendChild(benchList);
             container.appendChild(teamDiv);
         }
     }
 
     async function main() {
+        await loadPlayerDB();
         await fetchRosterData();
         await fetchUserData();
-        await fillBenches();
-        await displayYear(years[years.length - 1]);
+        await fetchLeagueData();
+        await displayRosters(years[years.length - 1]);
     }
 
     main();
