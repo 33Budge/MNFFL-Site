@@ -28,6 +28,21 @@ async function fetchRosterData () {
             teams[j][years[i]]["starters"] = data[j].starters;
             teams[j][years[i]]["players"] = data[j].players;
             teams[j][years[i]]["metadata"] = data[j].settings;
+            teams[j][years[i]]["bench"] = [];
+        }
+    }
+}
+
+async function fillBenches() {
+    for (i = 0; i < years.length; i++) {
+        for (j = 0; j < teams.length; j++) {
+            if (teams[j] && teams[j][years[i]] && Array.isArray(teams[j][years[i]]["players"])) {
+                for (k = 0; k < teams[j][years[i]]["players"].length; k++) {
+                    if(!teams[j][years[i]]["starters"].includes(teams[j][years[i]]["players"][k])) { //i feel like its getting a little unreadable here
+                        teams[j][years[i]]["bench"].push(teams[j][years[i]]["players"][k]);
+                    }
+                }
+            }
         }
     }
 }
@@ -64,16 +79,51 @@ if (window.location.pathname.endsWith("rosters.html")) {
 
 
     async function displayYear(year) {
-        var output;
-        for(i = 0; i < teams.length; i++) {
+        const container = document.getElementById("rosterContainer");
 
+        container.innerHTML = "";
+
+        for (i = 0; i < teams.length; i++) {
+            const teamDiv = document.createElement("div");
+            teamDiv.classList.add("teamcard");
+            const teamTitle = document.createElement("h2");
+            if (teams[i][year]["teamName"] == undefined) {
+                teamTitle.textContent = teams[i][year]["displayName"];
+            } else {
+                teamTitle.textContent = teams[i][year]["teamName"];
+            }
+
+
+
+            teamDiv.appendChild(teamTitle);
+            
+            const starterList = document.createElement("ul");
+            for (j = 0; j < teams[i][year]["starters"].length; j++) {
+                const li = document.createElement("li");
+                li.textContent = teams[i][year]["starters"][j];
+                starterList.appendChild(li);
+            }
+
+
+            const benchList = document.createElement("ul");
+            for (j = 0; j < teams[i][year]["bench"].length; j++) {
+                const li = document.createElement("li");
+                li.textContent = teams[i][year]["bench"][j];
+                benchList.appendChild(li);
+            }
+
+
+            teamDiv. appendChild(starterList);
+            teamDiv. appendChild(benchList);
+            container.appendChild(teamDiv);
         }
     }
 
     async function main() {
         await fetchRosterData();
         await fetchUserData();
-        //await displayYear(years[years.length - 1]);
+        await fillBenches();
+        await displayYear(years[years.length - 1]);
     }
 
     main();

@@ -149,4 +149,19 @@ a {
   margin-right: 25px;
 }
 
+#rosterContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.teamcard {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  width: 200px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  color:#ccc;
+}
 
