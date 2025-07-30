@@ -25,14 +25,15 @@ async function fetchRosterData () {
         const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i] + "/rosters"); 
         const data = await response.json();
         for (j = 0; j < data.length; j++) {
-            teams[j][years[i]]["ownerId"] = data[j].owner_id;
-            teams[j][years[i]]["starters"] = data[j].starters;
-            teams[j][years[i]]["players"] = data[j].players;
-            teams[j][years[i]]["metadata"] = data[j].settings;
-            teams[j][years[i]]["bench"] = [];
-            for (k = 0; k < teams[j][years[i]]["players"].length; k++) { // maybe bad, too many things in 1 function, but i fill the benches here
-                if(!teams[j][years[i]]["starters"].includes(teams[j][years[i]]["players"][k])) { //i feel like its getting a little unreadable here
-                    teams[j][years[i]]["bench"].push(teams[j][years[i]]["players"][k]);
+            teamIdx = data[j].roster_id - 1;
+            teams[teamIdx][years[i]]["ownerId"] = data[j].owner_id;
+            teams[teamIdx][years[i]]["starters"] = data[j].starters;
+            teams[teamIdx][years[i]]["players"] = data[j].players;
+            teams[teamIdx][years[i]]["metadata"] = data[j].settings;
+            teams[teamIdx][years[i]]["bench"] = [];
+            for (k = 0; k < teams[teamIdx][years[i]]["players"].length; k++) { // maybe bad, too many things in 1 function, but i fill the benches here
+                if(!teams[teamIdx][years[i]]["starters"].includes(teams[teamIdx][years[i]]["players"][k])) { //i feel like its getting a little unreadable here
+                    teams[teamIdx][years[i]]["bench"].push(teams[teamIdx][years[i]]["players"][k]);
                 }
             }
         }
@@ -44,10 +45,15 @@ async function fetchUserData() {
         const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i] + "/users");
         const data = await response.json();
         for (j = 0; j < data.length; j++) {
-            teams[j][years[i]]["teamName"] = data[j].metadata.team_name;
-            teams[j][years[i]]["displayName"] = data[j].display_name; //the "Rich Sohn" line
-            teams[j][years[i]]["teamAvatar"] = data[j].metadata.avatar;
-            teams[j][years[i]]["avatarId"] = data[j].avatar; //the "Rich Sohn" line + Noah
+            for (k = 0; k < teams.length; k++) {
+                if (teams[k][years[i]]["ownerId"] == data[j].user_id) {
+                    teamIdx = k;
+                }
+            }
+            teams[teamIdx][years[i]]["teamName"] = data[j].metadata.team_name;
+            teams[teamIdx][years[i]]["displayName"] = data[j].display_name; //the "Rich Sohn" line
+            teams[teamIdx][years[i]]["teamAvatar"] = data[j].metadata.avatar;
+            teams[teamIdx][years[i]]["avatarId"] = data[j].avatar; //the "Rich Sohn" line + Noah
         }
     }
 }
