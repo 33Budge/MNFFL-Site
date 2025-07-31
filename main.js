@@ -11,7 +11,7 @@ for (i = 0; i <= lastYear - firstYear; i++) {
 }
 
 for (i = 0; i < numOfTeams; i++) {
-    teams.push({number: i + 1});
+    teams.push({rosterId: i + 1});
 }
 
 for (i = 0; i < numOfTeams; i++) {
@@ -45,7 +45,7 @@ async function fetchUserData() {
         const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i] + "/users");
         const data = await response.json();
         for (j = 0; j < data.length; j++) {
-            for (k = 0; k < teams.length; k++) {
+            for (k = 0; k < teams.length; k++) { // maybe uneccesary but this finds what team each element in data is linked with
                 if (teams[k][years[i]]["ownerId"] == data[j].user_id) {
                     teamIdx = k;
                 }
@@ -67,7 +67,7 @@ async function fetchLeagueData() {
 }
 
 async function loadPlayerDB() { //probably bad because you need to fetch 5MB everytime
-    console.log("fetching playersDB");
+
     const res = await fetch("players.json");
     const data = await res.json();
     playerDB = data;
