@@ -1,8 +1,8 @@
 let numOfTeams = 12; //what what the most teams you ever had in this league at one time?
 let firstYear = 2022; //first year you started using sleeper for this league
 let lastYear = 2025; //last or current year of usign sleepr for this league
-let yearIDs = ['779087239882874880', '916390138647785472', '1048344081149054976', '1183100419290038272']; //paste in each league id for each of your years in sleeper
-let years = [];
+let yearIDs = ['779087239882874880', '916390138647785472', '1048344081149054976', '1183100419290038272']; //paste in each league id for each of your years in sleeper // also i can edit this so that only 1 league id is needed!!!!!
+let years = []; 
 const teams = [];
 let leagueSettings = [];
 
@@ -93,6 +93,25 @@ function getPlayerPos(id) {
     console.log(playerDB[id] + " not found ");
 }
 
+async function generateBanner() {
+    container = document.getElementById("banner");
+    container.innerHTML = "";
+
+    for(i = 0; i < years.length; i++) {
+        const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i]);
+        const data = await response.json();
+        avatarId = data.avatar;
+        const img = document.createElement("img");
+        img.src = "https://sleepercdn.com/avatars/" + avatarId;
+        img.alt = "League image for" +years[i];
+        img.classList.add("LeagueImage", years[i]);
+        container.appendChild(img);
+        console.log(`Image URL: ${img.src}`);
+    }
+}
+
+
+generateBanner();
 console.log(teams);
 console.log(leagueSettings);
 

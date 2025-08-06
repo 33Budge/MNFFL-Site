@@ -68,7 +68,6 @@ body {
   border-radius: 50px;
   text-align:Left;
   font-size: 35px;
-  cursor: pointer;
   font-family: 'Oswald', sans-serif;
   margin-left: 20px;
 }
@@ -147,7 +146,18 @@ a {
 .roster-button {
   font-size: 22px;
   margin-right: 25px;
+  background-color: #1f1d1d;
+  border-color: white;
+  color: white;
+  border-radius: 15%;
+  cursor: pointer;
+  border-style: solid;
+  padding: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-width: 1px;
 }
+
 
 #rosterContainer {
   display: flex;
@@ -167,4 +177,10 @@ a {
 
 .teamcard ul {
   list-style: none;
+}
+
+#banner img {
+  width: 150px;
+  height: 150px;
+  align-content: center;
 }
