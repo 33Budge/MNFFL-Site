@@ -1,35 +1,32 @@
-let numOfTeams = 12; //what what the most teams you ever had in this league at one time?
-let firstYear = 2022; //first year you started using sleeper for this league
-let lastYear = 2025; //last or current year of usign sleepr for this league
-let yearIDs = ['779087239882874880', '916390138647785472', '1048344081149054976', '1183100419290038272']; //paste in each league id for each of your years in sleeper // also i can edit this so that only 1 league id is needed!!!!!
+let currentYearID = '1183100419290038272';
+let numOfTeams = 0;
+let yearIDs = [];
 let yearIDstest = [];
 let years = []; 
 const teams = [];
 let leagueSettings = [];
 
-for (i = 0; i <= lastYear - firstYear; i++) {
-    years.push(firstYear + i);
-}
-
-for (i = 0; i < numOfTeams; i++) {
-    teams.push({rosterId: i + 1});
-}
-
-for (i = 0; i < numOfTeams; i++) {
-    for (j = 0; j < years.length; j++) {
-        teams[i][years[j]] = {};
-    }
-}
-
 async function fetchAllYears(leagueID) {
     const response = await fetch("https://api.sleeper.app/v1/league/" + leagueID);
     const data = await response.json();
-    yearIDstest.unshift(data.league_id);
+    yearIDs.unshift(data.league_id);
+    years.unshift(data.season);
+    if (data.settings.num_teams > numOfTeams) {
+        numOfTeams = data.settings.num_teams;
+    }
     if (data.previous_league_id == null){
-        console.log(yearIDstest);
-        console.log(yearIDs);
+
     } else {
-        fetchAllYears(data.previous_league_id);
+        await fetchAllYears(data.previous_league_id);
+    }
+}
+
+function initTeams() {
+    for (i = 0; i < numOfTeams; i++) {
+        teams.push({rosterId: i + 1});
+        for (j = 0; j < years.length; j++) {
+            teams[i][years[j]] = {};
+        }
     }
 }
 
@@ -157,17 +154,4 @@ if (window.location.pathname.endsWith("rosters.html")) {
             container.appendChild(teamDiv);
         }
     }
-
-    /* async function main() {
-        await loadPlayerDB();
-        await fetchRosterData();
-        await fetchUserData();
-        await fetchLeagueData();
-        //await displayRosters(years[years.length - 1]);
-        //await fetchAllYears("1183100419290038272");
-    }
-
-    main();
-    //genYearButtons(); */
-
 }

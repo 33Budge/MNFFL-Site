@@ -2,14 +2,6 @@
 async function genYearButtons(year) {
     container = document.getElementById("yearButtons");
     container.innerHTML = "";
-    /* years.forEach(year => {
-            const btn = document.createElement("button");
-            btn.textContent = year;
-            btn.classList.add("roster-button");
-            btn.onclick = () => displayRosters(year);
-            container.appendChild(btn);
-        
-    }); */
     for(let i = 0; i < years.length; i++) {
         const btn = document.createElement("button");
         btn.textContent = years[i];
@@ -24,7 +16,7 @@ async function displayRosters(year) {
 
     container.innerHTML = "";
 
-    for (let i = 0; i < teams.length; i++) {
+    for (let i = 0; i < leagueSettings[year]["total_rosters"]; i++) {
         const teamDiv = document.createElement("div");
         teamDiv.classList.add("teamcard");
 
@@ -58,13 +50,14 @@ async function displayRosters(year) {
 
 
 async function main() {
-        await loadPlayerDB();
-        await fetchRosterData();
-        await fetchUserData();
-        await fetchLeagueData();
-        await genYearButtons();
-        await displayRosters(years[years.length - 1]);
-        //await fetchAllYears("1183100419290038272");
+    await fetchAllYears(currentYearID);
+    await initTeams();
+    await loadPlayerDB();
+    await fetchRosterData();
+    await fetchUserData();
+    await fetchLeagueData();
+    await genYearButtons();
+    await displayRosters(years[years.length - 1]);
     }
 
 main();

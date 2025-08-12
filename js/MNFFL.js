@@ -15,5 +15,9 @@ async function generateBanner() {
     }
 }
 
+async function main(){
+    await fetchAllYears(currentYearID);
+    await generateBanner();
+}
 
-generateBanner();
+main();
