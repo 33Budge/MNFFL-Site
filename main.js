@@ -2,6 +2,7 @@ let numOfTeams = 12; //what what the most teams you ever had in this league at o
 let firstYear = 2022; //first year you started using sleeper for this league
 let lastYear = 2025; //last or current year of usign sleepr for this league
 let yearIDs = ['779087239882874880', '916390138647785472', '1048344081149054976', '1183100419290038272']; //paste in each league id for each of your years in sleeper // also i can edit this so that only 1 league id is needed!!!!!
+let yearIDstest = [];
 let years = []; 
 const teams = [];
 let leagueSettings = [];
@@ -17,6 +18,18 @@ for (i = 0; i < numOfTeams; i++) {
 for (i = 0; i < numOfTeams; i++) {
     for (j = 0; j < years.length; j++) {
         teams[i][years[j]] = {};
+    }
+}
+
+async function fetchAllYears(leagueID) {
+    const response = await fetch("https://api.sleeper.app/v1/league/" + leagueID);
+    const data = await response.json();
+    yearIDstest.unshift(data.league_id);
+    if (data.previous_league_id == null){
+        console.log(yearIDstest);
+        console.log(yearIDs);
+    } else {
+        fetchAllYears(data.previous_league_id);
     }
 }
 
@@ -66,7 +79,7 @@ async function fetchLeagueData() {
     }
 }
 
-async function loadPlayerDB() { //probably bad because you need to fetch 5MB everytime
+async function loadPlayerDB() { //probably bad because you need to fetch 5MB everytime, maybe?
 
     const res = await fetch("players.json");
     const data = await res.json();
@@ -101,12 +114,12 @@ async function generateBanner() {
         const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i]);
         const data = await response.json();
         avatarId = data.avatar;
+        
         const img = document.createElement("img");
         img.src = "https://sleepercdn.com/avatars/" + avatarId;
         img.alt = "League image for" +years[i];
         img.classList.add("LeagueImage", years[i]);
         container.appendChild(img);
-        console.log(`Image URL: ${img.src}`);
     }
 }
 
@@ -173,6 +186,7 @@ if (window.location.pathname.endsWith("rosters.html")) {
         await fetchUserData();
         await fetchLeagueData();
         await displayRosters(years[years.length - 1]);
+        await fetchAllYears("1183100419290038272");
     }
 
     main();

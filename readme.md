@@ -11,7 +11,9 @@ known needed fixes:
     -maybe add in the final readme that leagues that change league size may be messy
     -add past names, in the users fetch part
     -due to things like matchups using roster_id to id differnt people, maybe add in a variable that tracks which name is associated with that id number per year, like if someone changes roster_id's for some reason......
+    -PROBABLY FIX THE MAIN.JS, THIS IS DEF SPAGETTI CODE IM THINKING
 
 
-ideas:
-    hitmoney next to commishoners team
+known "un-needed" fixes:
+    - loading page (everything pops up at once)
+    
