@@ -106,28 +106,6 @@ function getPlayerPos(id) {
     console.log(playerDB[id] + " not found ");
 }
 
-async function generateBanner() {
-    container = document.getElementById("banner");
-    container.innerHTML = "";
-
-    for(i = 0; i < years.length; i++) {
-        const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i]);
-        const data = await response.json();
-        avatarId = data.avatar;
-        
-        const img = document.createElement("img");
-        img.src = "https://sleepercdn.com/avatars/" + avatarId;
-        img.alt = "League image for" +years[i];
-        img.classList.add("LeagueImage", years[i]);
-        container.appendChild(img);
-    }
-}
-
-
-generateBanner();
-console.log(teams);
-console.log(leagueSettings);
-
 if (window.location.pathname.endsWith("rosters.html")) {
     async function genYearButtons(year) {
         container = document.getElementById("yearButtons");
@@ -180,41 +158,16 @@ if (window.location.pathname.endsWith("rosters.html")) {
         }
     }
 
-    async function main() {
+    /* async function main() {
         await loadPlayerDB();
         await fetchRosterData();
         await fetchUserData();
         await fetchLeagueData();
-        await displayRosters(years[years.length - 1]);
-        await fetchAllYears("1183100419290038272");
+        //await displayRosters(years[years.length - 1]);
+        //await fetchAllYears("1183100419290038272");
     }
 
     main();
-    genYearButtons();
+    //genYearButtons(); */
 
-}
-
-if (window.location.pathname.endsWith("players.html")) {
-    fetch("https://api.sleeper.app/v1/league/1183100419290038272")
-    .then(response => response.json())
-    .then(data => console.log(data.league_id))
-    .catch(error => console.error(error));
-}
-if (window.location.pathname.endsWith("headtohead.html")) {
-    fetch("https://api.sleeper.app/v1/league/1183100419290038272")
-    .then(response => response.json())
-    .then(data => console.log(data.league_id))
-    .catch(error => console.error(error));
-}
-if (window.location.pathname.endsWith("teams.html")) {
-    fetch("https://api.sleeper.app/v1/league/1183100419290038272")
-    .then(response => response.json())
-    .then(data => console.log(data.league_id))
-    .catch(error => console.error(error));
-}
-if (window.location.pathname.endsWith("data.html")) {
-    fetch("https://api.sleeper.app/v1/league/1183100419290038272")
-    .then(response => response.json())
-    .then(data => console.log(data.league_id))
-    .catch(error => console.error(error));
 }
