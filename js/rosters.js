@@ -21,11 +21,17 @@ async function displayRosters(year) {
         teamDiv.classList.add("teamcard");
 
         const teamTitle = document.createElement("h2");
+        const userTitle = document.createElement("h3");
+
         if (teams[i][year]["teamName"] == undefined) {
             teamTitle.textContent = teams[i][year]["displayName"];
+            userTitle.textContent = teams[i][year]["displayName"];
         } else {
             teamTitle.textContent = teams[i][year]["teamName"];
+            userTitle.textContent = teams[i][year]["displayName"];
         }
+
+
         
         const starterList = document.createElement("ul");
         for (let j = 0; j < teams[i][year]["starters"].length; j++) {
@@ -42,6 +48,7 @@ async function displayRosters(year) {
         }
 
         teamDiv.appendChild(teamTitle);
+        teamDiv.appendChild(userTitle);
         teamDiv.appendChild(starterList);
         teamDiv.appendChild(benchList);
         container.appendChild(teamDiv);
