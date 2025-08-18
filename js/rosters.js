@@ -23,12 +23,19 @@ async function displayRosters(year) {
         const teamTitle = document.createElement("h2");
         const userTitle = document.createElement("h3");
 
+        if(teams[i][year]["ownerId"] == teams[i][years[years.length - 1]]["ownerId"]) {
+            displayName = teams[i][years[years.length - 1]]["displayName"];
+        } else {
+            displayName = teams[i][year]["displayName"];
+        }
+
+
         if (teams[i][year]["teamName"] == undefined) {
             teamTitle.textContent = teams[i][year]["displayName"];
-            userTitle.textContent = teams[i][year]["displayName"];
+            userTitle.textContent = displayName;
         } else {
             teamTitle.textContent = teams[i][year]["teamName"];
-            userTitle.textContent = teams[i][year]["displayName"];
+            userTitle.textContent = displayName;
         }
 
 
