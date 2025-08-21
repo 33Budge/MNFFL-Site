@@ -23,7 +23,7 @@ async function displayRosters(year) {
         const teamTitle = document.createElement("h2");
         const userTitle = document.createElement("h3");
 
-        if(teams[i][year]["ownerId"] == teams[i][years[years.length - 1]]["ownerId"]) {
+        if(teams[i][year]["ownerId"] == teams[i][years[years.length - 1]]["ownerId"]) { //only works with teams that are within the current year
             displayName = teams[i][years[years.length - 1]]["displayName"];
         } else {
             displayName = teams[i][year]["displayName"];
@@ -43,14 +43,20 @@ async function displayRosters(year) {
         const starterList = document.createElement("ul");
         for (let j = 0; j < teams[i][year]["starters"].length; j++) {
             const li = document.createElement("li");
-            li.textContent = leagueSettings[year]["roster_positions"][j] + " " + getPlayerName(teams[i][year]["starters"][j]);
+           /*  li.textContent = leagueSettings[year]["roster_positions"][j] + " " + getPlayerName(teams[i][year]["starters"][j]); */
+           const pos =  leagueSettings[year]["roster_positions"][j];
+           const name = getPlayerName(teams[i][year]["starters"][j]);
+           li.innerHTML = "<span class='" + pos + "'>" + pos + "</span> " + "<span class='player'>" + name + "</span>";
             starterList.appendChild(li);
         }
 
         const benchList = document.createElement("ul");
         for (let j = 0; j < teams[i][year]["bench"].length; j++) {
             const li = document.createElement("li");
-            li.textContent = getPlayerPos(teams[i][year]["bench"][j]) + " " + getPlayerName(teams[i][year]["bench"][j]);
+            /* li.textContent = getPlayerPos(teams[i][year]["bench"][j]) + " " + getPlayerName(teams[i][year]["bench"][j]); */
+            const pos = li.textContent = getPlayerPos(teams[i][year]["bench"][j]);
+            const name = getPlayerName(teams[i][year]["bench"][j]);
+            li.innerHTML = "<span class='" + pos + "'>" + pos + "</span> " + "<span class='player'>" + name + "</span>";
             benchList.appendChild(li);
         }
 

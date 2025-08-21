@@ -223,3 +223,11 @@ a {
              2px -2px 6px rgba(0, 0, 0, 1),
              -2px 2px 6px rgba(0, 0, 0, 1);
 }
+
+.QB { color: #c12d60; }
+.RB { color: #20b4a5; }
+.WR { color: #477bb9; }
+.TE { color: #e59e54; }
+.DEF { color: #b85d41; }
+.K { color: #b565e9; }
+.player { color: white; }
