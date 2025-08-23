@@ -61,14 +61,22 @@ async function fetchUserData() {
                 }
             }
             teams[teamIdx][years[i]]["teamName"] = data[j].metadata.team_name;
-            teams[teamIdx][years[i]]["displayName"] = data[j].display_name; //the "Rich Sohn" line
+            teams[teamIdx][years[i]]["displayName"] = data[j].display_name; //the "Rich" line
             teams[teamIdx][years[i]]["teamAvatar"] = data[j].metadata.avatar;
-            teams[teamIdx][years[i]]["avatarId"] = data[j].avatar; //the "Rich Sohn" line + Noah
+            teams[teamIdx][years[i]]["avatarId"] = data[j].avatar; //the "Rich + Noah" line
         }
     }
 }
 
 async function fetchLeagueData() {
+    for (i = 0; i < years.length; i++) {
+        const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i]);
+        const data = await response.json();
+        leagueSettings[years[i]] = data;
+    }
+}
+
+async function fetchMatchups() {
     for (i = 0; i < years.length; i++) {
         const response = await fetch("https://api.sleeper.app/v1/league/" + yearIDs[i]);
         const data = await response.json();

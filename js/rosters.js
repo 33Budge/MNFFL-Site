@@ -11,6 +11,34 @@ async function genYearButtons(year) {
     }
 }
 
+async function genYearDropdown() {
+    const container = document.getElementById("yearButtons"); 
+    container.innerHTML = "";
+
+    const select = document.createElement("select");
+    select.classList.add("roster-dropdown");
+
+    const placeholderOption = document.createElement("option");
+    placeholderOption.textContent = "Select a year";
+    placeholderOption.disabled = true;
+    placeholderOption.selected = true;
+    select.appendChild(placeholderOption);
+
+    for (let i = 0; i < years.length; i++) {
+        const option = document.createElement("option");
+        option.value = years[i];
+        option.textContent = years[i];
+        select.appendChild(option);
+    }
+
+    select.onchange = (e) => {
+        displayRosters(e.target.value);
+    };
+
+    container.appendChild(select);
+}
+
+
 async function displayRosters(year) {
     const container = document.getElementById("rosterContainer");
 
@@ -76,7 +104,8 @@ async function main() {
     await fetchRosterData();
     await fetchUserData();
     await fetchLeagueData();
-    await genYearButtons();
+    //await genYearButtons();
+    await genYearDropdown();
     await displayRosters(years[years.length - 1]);
     }
 
