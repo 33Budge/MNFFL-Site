@@ -39,7 +39,7 @@ async function genYearDropdown() {
 }
 
 
-async function displayRosters(year) {
+async function displayRosters(year) { //massive function i feel like... getting into spagetti code territory fs.
     const container = document.getElementById("rosterContainer");
 
     container.innerHTML = "";
@@ -49,7 +49,10 @@ async function displayRosters(year) {
         teamDiv.classList.add("teamcard");
 
         const teamTitle = document.createElement("h2");
-        const userTitle = document.createElement("h3");
+
+        const teamAvatar = document.createElement("h3");
+
+        const userTitle = document.createElement("h4");
 
         if(teams[i][year]["ownerId"] == teams[i][years[years.length - 1]]["ownerId"]) { //only works with teams that are within the current year
             displayName = teams[i][years[years.length - 1]]["displayName"];
@@ -60,13 +63,28 @@ async function displayRosters(year) {
 
         if (teams[i][year]["teamName"] == undefined) {
             teamTitle.textContent = teams[i][year]["displayName"];
-            userTitle.textContent = displayName;
+            //userTitle.textContent = displayName;
+            teamTitle.append(" (" + displayName + ")");
         } else {
             teamTitle.textContent = teams[i][year]["teamName"];
-            userTitle.textContent = displayName;
+            //userTitle.textContent = displayName;
+            teamTitle.append(" (" + displayName + ")");
         }
 
+        avatarId = teams[i][year]["avatarId"];
 
+        if (teams[i][year]["teamAvatar"] != undefined) {
+            const img = document.createElement("img");
+            img.src = teams[i][year]["teamAvatar"];
+            img.classList.add("rosterAvatar");
+            teamAvatar.appendChild(img);
+        } else {
+
+            const img = document.createElement("img");
+            img.src = "https://sleepercdn.com/avatars/" + avatarId;
+            img.classList.add("rosterAvatar");
+            teamAvatar.appendChild(img);
+        }
         
         const starterList = document.createElement("ul");
         for (let j = 0; j < teams[i][year]["starters"].length; j++) {
@@ -89,7 +107,8 @@ async function displayRosters(year) {
         }
 
         teamDiv.appendChild(teamTitle);
-        teamDiv.appendChild(userTitle);
+        teamDiv.appendChild(teamAvatar);
+        //teamDiv.appendChild(userTitle);
         teamDiv.appendChild(starterList);
         teamDiv.appendChild(benchList);
         container.appendChild(teamDiv);

@@ -245,3 +245,9 @@ a {
 .DEF { color: #b85d41; }
 .K { color: #b565e9; }
 .player { color: white; }
+.rosterAvatar {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 100%;
+}
